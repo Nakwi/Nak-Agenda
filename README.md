@@ -1,4 +1,4 @@
-# Bot Discord - Gestion des Devoirs
+# Nak-Agenda - Gestion des Devoirs
 
 ## Description
 Ce projet est un bot Discord permettant de gérer une liste de devoirs directement sur un serveur Discord. 
