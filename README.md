@@ -35,8 +35,8 @@ Le bot vérifie les échéances toutes les 60 secondes et envoie une notificatio
 ### Étapes
 1. Clonez le dépôt :
    ```bash
-   git clone https://github.com/votre-utilisateur/bot-devoirs.git
-   cd bot-devoirs
+   git clone https://github.com/Nakwi/Nak-Agenda.git
+   cd Nak-Agenda
    ```
 
 2. Installez les dépendances :
@@ -63,8 +63,8 @@ Le bot vérifie les échéances toutes les 60 secondes et envoie une notificatio
 ## Structure du Projet
 
 ```
-📁 bot-devoirs
-├── bot.py               # Code principal du bot
+📁 Nak-Agenda
+├── Nak-Agenda.py               # Code principal du bot
 ├── devoirs.json         # Fichier de stockage des devoirs (généré automatiquement)
 ├── requirements.txt     # Liste des dépendances Python
 └── README.md            # Documentation du projet
