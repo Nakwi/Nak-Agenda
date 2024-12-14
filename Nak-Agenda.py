@@ -136,7 +136,7 @@ async def on_ready():
             description="Utilisez les boutons ci-dessous pour gérer vos devoirs.",
             color=discord.Color.blurple()
         )
-        embed.set_footer(text="Bot Devoirs | Par Nakwi")
+        embed.set_footer(text="Bot Devoirs | Par Corsyn Ryan")
         view = DevoirsView()
         await channel.send(embed=embed, view=view)
     else:
