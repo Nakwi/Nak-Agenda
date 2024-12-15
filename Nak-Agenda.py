@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 
 DISCORD_TOKEN = "DISCORD_TOKEN"
 CHANNEL_ID = ID_DU_CHANNEL
-CHECK_INTERVAL = 60
+CHECK_INTERVAL = 60  
 DEVOIRS_FILE = "devoirs.json"
 
 intents = discord.Intents.default()
@@ -42,14 +42,14 @@ class AddDevoirModal(Modal):
             liste_devoirs.append({"nom": self.nom.value, "deadline": deadline.isoformat()})
             save_devoirs(liste_devoirs)
             embed = discord.Embed(
-                title="📓 Nouveau devoir ajouté",
+                title="\ud83d\udcd3 Nouveau devoir ajouté",
                 description=f"**Nom :** {self.nom.value}\n**Deadline :** {deadline.strftime('%d/%m/%Y')}",
                 color=discord.Color.green()
             )
             await interaction.response.send_message(embed=embed, ephemeral=True)
         except ValueError:
             embed = discord.Embed(
-                title="❌ Erreur",
+                title="\u274c Erreur",
                 description="Format de date invalide. Utilise `jj/mm/aa`.",
                 color=discord.Color.red()
             )
@@ -67,7 +67,7 @@ class DevoirsView(View):
     async def list_devoirs(self, interaction: discord.Interaction, button: Button):
         if not liste_devoirs:
             embed = discord.Embed(
-                title="📜 Aucun devoir enregistré",
+                title="\ud83d\udcdc Aucun devoir enregistré",
                 description="Ajoute-en un avec le bouton **Ajouter un devoir**.",
                 color=discord.Color.orange()
             )
@@ -76,14 +76,14 @@ class DevoirsView(View):
 
         devoirs_tries = sorted(liste_devoirs, key=lambda x: x["deadline"])
         embed = discord.Embed(
-            title="📜 Liste des devoirs à venir",
+            title="\ud83d\udcdc Liste des devoirs à venir",
             color=discord.Color.blurple()
         )
         for i, devoir in enumerate(devoirs_tries, start=1):
             deadline = datetime.fromisoformat(devoir["deadline"]).date()
             embed.add_field(
                 name=f"{i}. {devoir['nom']}",
-                value=f"📅 {deadline.strftime('%d/%m/%Y')}",
+                value=f"\ud83d\udcc5 {deadline.strftime('%d/%m/%Y')}",
                 inline=False
             )
         await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -92,7 +92,7 @@ class DevoirsView(View):
     async def delete_devoir(self, interaction: discord.Interaction, button: Button):
         if not liste_devoirs:
             embed = discord.Embed(
-                title="❌ Aucun devoir à supprimer",
+                title="\u274c Aucun devoir à supprimer",
                 description="Ajoute-en un avec le bouton **Ajouter un devoir**.",
                 color=discord.Color.red()
             )
@@ -115,7 +115,7 @@ class DevoirsView(View):
             supprime = liste_devoirs.pop(index)
             save_devoirs(liste_devoirs)
             embed = discord.Embed(
-                title="🗑️ Devoir supprimé",
+                title="\ud83d\uddd1\ufe0f Devoir supprimé",
                 description=f"**Nom :** {supprime['nom']}",
                 color=discord.Color.red()
             )
@@ -124,7 +124,7 @@ class DevoirsView(View):
         select.callback = select_callback
         view = View()
         view.add_item(select)
-        await interaction.response.send_message("🗑️ Sélectionnez un devoir à supprimer :", view=view, ephemeral=True)
+        await interaction.response.send_message("\ud83d\uddd1\ufe0f Sélectionnez un devoir à supprimer :", view=view, ephemeral=True)
 
 @bot.event
 async def on_ready():
@@ -132,7 +132,7 @@ async def on_ready():
     channel = bot.get_channel(CHANNEL_ID)
     if channel:
         embed = discord.Embed(
-            title="🎓 Menu des devoirs",
+            title="\ud83c\udf93 Menu des devoirs",
             description="Utilisez les boutons ci-dessous pour gérer vos devoirs.",
             color=discord.Color.blurple()
         )
@@ -141,6 +141,8 @@ async def on_ready():
         await channel.send(embed=embed, view=view)
     else:
         print(f"Erreur : Canal avec ID {CHANNEL_ID} introuvable.")
+
+    check_rappels.start()  
 
 @tasks.loop(seconds=CHECK_INTERVAL)
 async def check_rappels():
@@ -151,15 +153,19 @@ async def check_rappels():
         return
 
     for devoir in liste_devoirs[:]:
-        deadline = datetime.fromisoformat(devoir["deadline"]).date()
-        if maintenant == deadline:
-            embed = discord.Embed(
-                title="🔔 Rappel de devoir",
-                description=f"**{devoir['nom']}** est prévu pour aujourd'hui !",
-                color=discord.Color.orange()
-            )
-            await channel.send(embed=embed)
-            liste_devoirs.remove(devoir)
-            save_devoirs(liste_devoirs)
+        try:
+            deadline = datetime.fromisoformat(devoir["deadline"]).date()
+            print(f"Vérification du devoir : {devoir['nom']}, deadline : {deadline}, aujourd'hui : {maintenant}")
+            if maintenant == deadline:
+                embed = discord.Embed(
+                    title="\ud83d\udd14 Rappel de devoir",
+                    description=f"**{devoir['nom']}** est prévu pour aujourd'hui !",
+                    color=discord.Color.orange()
+                )
+                await channel.send(embed=embed)
+                liste_devoirs.remove(devoir)
+                save_devoirs(liste_devoirs)
+        except Exception as e:
+            print(f"Erreur lors du traitement du devoir {devoir}: {e}")
 
 bot.run(DISCORD_TOKEN)
