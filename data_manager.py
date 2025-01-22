@@ -1,13 +1,13 @@
-import json
-from config import DEVOIRS_FILE
+from database import fetch_devoirs, add_devoir, delete_devoir
 
 def load_devoirs():
-    try:
-        with open(DEVOIRS_FILE, "r") as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
+    """Récupère la liste des devoirs depuis la base de données."""
+    return fetch_devoirs()
 
-def save_devoirs(liste_devoirs):
-    with open(DEVOIRS_FILE, "w") as file:
-        json.dump(liste_devoirs, file, indent=4)
+def save_devoirs(nom, deadline, pdf=None, rappel_at=None):
+    """Ajoute un nouveau devoir dans la base de données."""
+    add_devoir(nom, deadline, pdf, rappel_at)
+
+def remove_devoir(devoir_id):
+    """Supprime un devoir dans la base de données."""
+    delete_devoir(devoir_id)
