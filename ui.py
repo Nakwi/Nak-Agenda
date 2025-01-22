@@ -6,23 +6,51 @@ from data_manager import load_devoirs, save_devoirs, remove_devoir
 class AddDevoirModal(Modal):
     def __init__(self):
         super().__init__(title="Ajouter un nouveau devoir 📝")
-        self.nom = TextInput(label="📘 Nom du devoir", placeholder="Exemple : Maths", style=discord.TextStyle.short)
-        self.deadline = TextInput(label="⏰ Date limite (jj/mm/aaaa)", placeholder="Exemple : 15/12/2024", style=discord.TextStyle.short)
-        self.pdf = TextInput(label="📎 Lien PDF (optionnel)", placeholder="Exemple : https://example.com/devoir.pdf", required=False)
+        self.nom = TextInput(
+            label="📘 Nom du devoir", 
+            placeholder="Exemple : Maths", 
+            style=discord.TextStyle.short
+        )
+        self.description = TextInput(
+            label="🖊️ Description du devoir", 
+            placeholder="Exemple : ex4 page 233", 
+            style=discord.TextStyle.paragraph, 
+            required=False
+        )
+        self.deadline = TextInput(
+            label="⏰ Date limite (jj/mm/aaaa)", 
+            placeholder="Exemple : 15/12/2024", 
+            style=discord.TextStyle.short
+        )
+        self.pdf = TextInput(
+            label="📎 Lien PDF (optionnel)", 
+            placeholder="Exemple : https://example.com/devoir.pdf", 
+            required=False
+        )
         self.add_item(self.nom)
+        self.add_item(self.description)
         self.add_item(self.deadline)
         self.add_item(self.pdf)
 
     async def on_submit(self, interaction: discord.Interaction):
         try:
             deadline = datetime.strptime(self.deadline.value, "%d/%m/%Y").date()
-            save_devoirs(self.nom.value.strip(), deadline, self.pdf.value.strip() if self.pdf.value else None)
+            # Sauvegarder le devoir avec la description
+            save_devoirs(
+                nom=self.nom.value.strip(),
+                deadline=deadline,
+                pdf=self.pdf.value.strip() if self.pdf.value else None,
+                description=self.description.value.strip() if self.description.value else None
+            )
 
+            # Créer l'embed de confirmation
             embed = discord.Embed(
                 title="📓 Nouveau devoir ajouté",
                 description=f"**Nom :** {self.nom.value}\n**Deadline :** {deadline.strftime('%d/%m/%Y')}",
                 color=discord.Color.green()
             )
+            if self.description.value:
+                embed.add_field(name="🖊️ Description", value=self.description.value, inline=False)
             if self.pdf.value:
                 embed.add_field(name="📎 Fichier PDF", value=f"[Lien PDF]({self.pdf.value})", inline=False)
             await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -61,7 +89,9 @@ class DevoirsView(View):
             color=discord.Color.blurple()
         )
         for i, devoir in enumerate(devoirs, start=1):
-            description = f"📅 {devoir['deadline']}"
+            description = f"📅 **Deadline :** {devoir['deadline']}"
+            if devoir["description"]:
+                description += f"\n🖊️ **Description :** {devoir['description']}"
             if devoir["pdf"]:
                 description += f"\n📎 [Lien PDF]({devoir['pdf']})"
             embed.add_field(
