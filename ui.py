@@ -1,36 +1,9 @@
-
-
 import discord
-from discord.ext import commands, tasks
-from discord.ui import Button, View, Modal, TextInput, Select
-import json
-from datetime import datetime, timedelta
-
-
-DISCORD_TOKEN = "Votre TOKEN" 
-CHANNEL_ID = 1317552426592768010 
-CHECK_INTERVAL = 60 
-DEVOIRS_FILE = "devoirs.json"
-
-
-intents = discord.Intents.default()
-intents.message_content = True
-bot = commands.Bot(command_prefix="!", intents=intents)
-
-
-def load_devoirs():
-    try:
-        with open(DEVOIRS_FILE, "r") as file:
-            return json.load(file)
-    except (FileNotFoundError, json.JSONDecodeError):
-        return []
-
-def save_devoirs(liste_devoirs):
-    with open(DEVOIRS_FILE, "w") as file:
-        json.dump(liste_devoirs, file, indent=4)
+from discord.ui import Modal, TextInput, Button, View, Select
+from data_manager import load_devoirs, save_devoirs
+from datetime import datetime
 
 liste_devoirs = load_devoirs()
-
 
 class AddDevoirModal(Modal):
     def __init__(self):
@@ -60,7 +33,6 @@ class AddDevoirModal(Modal):
             )
             if self.pdf.value:
                 embed.add_field(name="📎 Fichier PDF", value=f"[Lien PDF]({self.pdf.value})", inline=False)
-            embed.set_footer(text="Bot Devoirs | Par Corsyn Ryan", icon_url=interaction.user.avatar.url)
             await interaction.response.send_message(embed=embed, ephemeral=True)
         except ValueError:
             await interaction.response.send_message(
@@ -146,56 +118,3 @@ class DevoirsView(View):
         view = View()
         view.add_item(select)
         await interaction.response.send_message("🗑️ Sélectionnez un devoir à supprimer :", view=view, ephemeral=True)
-
-
-@bot.event
-async def on_ready():
-    print(f"Bot connecté en tant que {bot.user}")
-    channel = bot.get_channel(CHANNEL_ID)
-    if channel:
-        # Clear le canal
-        async for message in channel.history(limit=None):
-            await message.delete()
-
-        embed = discord.Embed(
-            title="🎓 Menu principal des devoirs",
-            description=(
-                "Bienvenue dans le **menu principal des devoirs** !\n"
-                "\n"
-                "📝 **Ajouter un devoir** : Cliquez pour créer un nouveau devoir.\n"
-                "📋 **Voir la liste des devoirs** : Consultez vos devoirs à venir.\n"
-                "🗑️ **Supprimer un devoir** : Retirez un devoir déjà ajouté.\n"
-                "\n"
-                "📅 Planifiez vos tâches et restez organisé !"
-            ),
-            color=discord.Color.blurple()
-        )
-        embed.set_thumbnail(url="https://cdn-icons-png.flaticon.com/512/3050/3050525.png")
-        embed.set_footer(text="Bot Devoirs | Par Corsyn Ryan")
-        view = DevoirsView()
-        await channel.send(embed=embed, view=view)
-    else:
-        print(f"Erreur : Canal avec ID {CHANNEL_ID} introuvable.")
-
-@tasks.loop(seconds=CHECK_INTERVAL)
-async def check_rappels():
-    maintenant = datetime.now().date()
-    channel = bot.get_channel(CHANNEL_ID)
-    if not channel:
-        print(f"Erreur : Canal avec ID {CHANNEL_ID} introuvable.")
-        return
-
-    for devoir in liste_devoirs[:]:
-        deadline = datetime.fromisoformat(devoir["deadline"]).date()
-        if maintenant == deadline:
-            embed = discord.Embed(
-                title="🔔 Rappel de devoir",
-                description=f"**{devoir['nom']}** est prévu pour aujourd'hui !",
-                color=discord.Color.orange()
-            )
-            await channel.send(embed=embed)
-            liste_devoirs.remove(devoir)
-            save_devoirs(liste_devoirs)
-
-
-bot.run(DISCORD_TOKEN)
