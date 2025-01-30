@@ -5,7 +5,7 @@ def get_connection():
     return mysql.connector.connect(
         host="localhost",       # Adresse du serveur MySQL
         user="nak_user",        # Utilisateur MySQL
-        password="AgPass",      # Mot de passe utilisateur
+        password="mdp",      # Mot de passe utilisateur
         database="nak_agenda",  # Nom de la base de données
         port=3306               # Port exposé par MySQL
     )
