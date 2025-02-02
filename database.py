@@ -3,10 +3,10 @@ import mysql.connector
 def get_connection():
     """Créer une connexion à la base de données MySQL."""
     return mysql.connector.connect(
-        host="localhost",       # Adresse du serveur MySQL
-        user="nak_user",        # Utilisateur MySQL
-        password="mdp",      # Mot de passe utilisateur
-        database="nak_agenda",  # Nom de la base de données
+        host="***",       # Adresse du serveur MySQL
+        user="***",        # Utilisateur MySQL
+        password="***",      # Mot de passe utilisateur
+        database="***",  # Nom de la base de données
         port=3306               # Port exposé par MySQL
     )
 
