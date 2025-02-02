@@ -57,7 +57,7 @@ gestionnaire-devoirs/
 │── data_manager.py       # Centralisation des interactions entre modules
 │── config.py             # Gestion des variables d’environnement
 │── requirements.txt      # Liste des dépendances Python
-│── .env                  # Variables d’environnement (non versionné)
+│── .env                  # Variables d’environnement
 │── templates/            # Templates HTML pour Flask
 └── README.md             # Documentation du projet
 ```
