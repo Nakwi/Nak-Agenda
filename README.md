@@ -249,7 +249,7 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 
 ---
 
-### 🏁 Conclusion  
+### Résumé  
 Chaque fichier du projet a un rôle bien défini et contribue à l’intégration fluide entre **Discord, Flask et MySQL**.  
 
 - `main.py` : point d’entrée, exécution parallèle de Flask et du bot.  
