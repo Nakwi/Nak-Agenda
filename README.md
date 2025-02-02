@@ -278,4 +278,6 @@ Le **gestionnaire de devoirs** est un projet qui allie **simplicité d’utilisa
 ✔️ **Expérience utilisateur fluide** avec une interface interactive.  
 ✔️ **Base de données MySQL** pour stocker les informations.  
 
+Ce projet m'a permis d'apprendre et d'approfondir mes connaissances en **Python.**
+
 🚀 **Prêt à être utilisé et amélioré !** 🚀  
