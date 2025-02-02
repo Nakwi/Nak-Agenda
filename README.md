@@ -245,6 +245,7 @@ L’IA a joué un rôle clé dans la conception de ce projet, notamment pour :
 - **Meilleures pratiques** pour la gestion de la **programmation asynchrone** et des bases de données.  
 
 Sans cette assistance, la mise en place de certaines fonctionnalités comme le système de **menus dans le bot Discord** ou la gestion **dynamique des devoirs** sur l’interface web aurait été beaucoup plus complexe.
+
 ---
 
 ## 🎯 Conclusion  
