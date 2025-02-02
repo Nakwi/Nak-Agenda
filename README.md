@@ -42,6 +42,25 @@ CHECK_INTERVAL=60
 
 Remplacez `ton_token_ici` par votre token Discord et `123456789012345678` par l’ID du canal Discord où le bot interagira.
 
+🔐 Sécurité et gestion des variables d'environnement
+
+L'utilisation d'un fichier .env permet de sécuriser les informations sensibles, comme les tokens d’authentification et les identifiants de services. Cela évite d’exposer ces données directement dans le code source.
+
+Pour garantir une bonne gestion de la sécurité :
+
+- Ne committez jamais le fichier .env dans un dépôt Git en l'ajoutant à .gitignore (ici je le fais pour la démo mais il est vide).
+
+- Utilisez dotenv dans votre code pour charger ces variables de manière sécurisée :
+
+```python
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+discord_token = os.getenv("DISCORD_TOKEN")
+```
+En suivant ces bonnes pratiques, vous empêchez que des tiers puissent récupérer des informations sensibles en accédant à votre code source. 🔒
+
 ---
 
 ## 🏗️ Architecture du Projet  
