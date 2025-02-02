@@ -111,6 +111,8 @@ Les rappels sont gérés via une boucle `tasks.loop` qui vérifie périodiquemen
 
 ### 📂 Explication des fichiers Python  
 
+*Ici je vais mettre seulement des extraits de code. Les codes complet son disponible directement sur le dépôt.*
+
 #### `main.py`  
 Point d’entrée du projet, il :  
 - Lance **Flask et le bot Discord** en parallèle via `threading.Thread`  
