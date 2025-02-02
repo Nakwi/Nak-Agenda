@@ -46,7 +46,7 @@ Remplacez `ton_token_ici` par votre token Discord et `123456789012345678` par l�
 
 **🔐 Sécurité et gestion des variables d'environnement**
 
-L'utilisation d'un fichier .env permet de sécuriser les informations sensibles, comme les tokens d’authentification et les identifiants de services. Cela évite d’exposer ces données directement dans le code source.
+L'utilisation d'un fichier `.env` permet de sécuriser les informations sensibles, comme les tokens d’authentification et les identifiants de services. Cela évite d’exposer ces données directement dans le code source.
 
 Pour garantir une bonne gestion de la sécurité :
 
