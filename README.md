@@ -5,8 +5,8 @@
 ## 📝 Introduction  
 Dans le cadre de ce projet, j’ai développé une application permettant de gérer des devoirs de manière efficace et interactive. Ce gestionnaire repose sur deux interfaces complémentaires :  
 
-- **Un bot Discord 🎮** : Il permet d'ajouter, afficher et supprimer des devoirs directement depuis un serveur Discord grâce à une interface interactive utilisant des boutons et des menus déroulants.  
-- **Une interface graphique web 🌐** : Basée sur Flask, elle offre une gestion visuelle des devoirs avec un design moderne, permettant aux utilisateurs d'ajouter, consulter et supprimer leurs tâches facilement.  
+- **Un bot Discord ** : Il permet d'ajouter, afficher et supprimer des devoirs directement depuis un serveur Discord grâce à une interface interactive utilisant des boutons et des menus déroulants.  
+- **Une interface graphique web ** : Basée sur Flask, elle offre une gestion visuelle des devoirs avec un design moderne, permettant aux utilisateurs d'ajouter, consulter et supprimer leurs tâches facilement.  
 
 L’objectif de ce projet est de simplifier l’organisation des devoirs en combinant la flexibilité de Discord avec une interface accessible via un navigateur.
 
