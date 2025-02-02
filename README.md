@@ -91,7 +91,7 @@ La gestion des rappels repose sur une boucle de vérification (`tasks.loop`).
 
 ### 📂 Explication des fichiers Python
 
-## `main.py`
+### `main.py`
 Ce fichier est le **point d’entrée principal** du projet. Il a plusieurs responsabilités :  
 
 ### 🔹 Lancement du bot Discord et du serveur Flask en parallèle  
@@ -131,7 +131,7 @@ bot.run("VOTRE_DISCORD_TOKEN")
 
 ---
 
-## `ui.py`
+### `ui.py`
 Ce fichier gère **l’interface utilisateur interactive** sur Discord.  
 
 ### 🔹 Utilisation de `discord.ui` pour les interactions  
@@ -155,7 +155,7 @@ class DevoirButton(Button):
 
 ---
 
-## `events.py`
+### `events.py`
 Ce fichier gère les **événements asynchrones** du bot.  
 
 ### 🔹 Utilisation du décorateur `@bot.event`  
@@ -176,7 +176,7 @@ async def on_ready():
 
 ---
 
-## `database.py`
+### `database.py`
 Ce fichier gère l’**interaction avec la base de données MySQL**.  
 
 ### 🔹 Connexion à MySQL avec `mysql.connector.connect()`  
@@ -209,7 +209,7 @@ def ajouter_devoir(nom, date):
 
 ---
 
-## `data_manager.py`
+### `data_manager.py`
 Ce fichier **centralise les interactions** entre Flask, Discord et la base de données.  
 
 ### 🔹 Encapsulation des appels SQL  
@@ -227,7 +227,7 @@ def obtenir_devoirs():
 
 ---
 
-## `config.py`
+### `config.py`
 Ce fichier gère la **configuration et les variables d’environnement**.  
 
 ### 🔹 Utilisation de `dotenv`  
