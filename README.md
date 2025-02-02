@@ -26,7 +26,7 @@ Clonez ce dépôt et installez les dépendances avec :
 
 ```bash
 git clone https://github.com/Nakwi/Nak-Agenda.git
-cd gestionnaire-devoirs
+cd Nak-Agenda
 pip install -r requirements.txt
 ```
 ### ⚙️ Configuration de l’environnement
