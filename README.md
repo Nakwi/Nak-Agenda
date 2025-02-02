@@ -192,15 +192,59 @@ DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
 DATABASE_URL = os.getenv("DATABASE_URL")
 ```
 
+### Résumé  
+Chaque fichier du projet a un rôle bien défini et contribue à l’intégration fluide entre **Discord, Flask et MySQL**.  
+
+- `main.py` : point d’entrée, exécution parallèle de Flask et du bot.  
+- `ui.py` : interface interactive sur Discord avec boutons et menus.  
+- `events.py` : gestion des événements et tâches planifiées.  
+- `database.py` : interaction avec MySQL.  
+- `data_manager.py` : centralisation des requêtes SQL.  
+- `config.py` : gestion des variables d’environnement.  
+
+L'architecture asynchrone du bot permet de **gérer efficacement les devoirs** tout en assurant une **réactivité optimale**.
+
 ---
 
-## 🤖 Rôle de l'Intelligence Artificielle  
+## 🔥 Utilisation de Flask  
 
-L’IA a été utilisée pour :  
-- **Apprendre** `discord.py` (documentation parfois complexe)  
-- **Comprendre Flask** et son architecture (routes, templates, base de données)  
-- **Optimiser le code** (bonnes pratiques et amélioration des structures)  
+Le projet utilise **Flask** pour gérer l'interface web et permettre aux utilisateurs d'interagir avec la base de données via un navigateur.  
 
+### 📌 Fonctionnalités de Flask  
+Flask est utilisé pour :  
+
+- **Afficher la liste des devoirs** via des templates HTML.  
+- **Ajouter de nouveaux devoirs** à travers un formulaire.  
+- **Supprimer des devoirs** grâce à des requêtes POST.  
+
+### 🎓 Apprentissage de Flask  
+L'utilisation de Flask a nécessité un apprentissage approfondi, car ce framework n'était pas connu au départ.  
+Cela a permis d’acquérir des compétences en :  
+
+- **Gestion de routes** (`@app.route()`).  
+- **Templating Jinja** pour afficher dynamiquement les données.  
+- **Manipulation de requêtes HTTP** (GET, POST) pour interagir avec la base de données.
+
+
+---
+## 🤖 Rôle de l'Intelligence Artificielle dans ce projet  
+
+L’IA a joué un rôle clé dans la conception de ce projet, notamment pour :  
+
+### 📚 Apprentissage des commandes Discord en Python  
+- La documentation officielle de `discord.py` n’étant pas toujours claire, **ChatGPT** a été utilisé pour comprendre la création d'interfaces interactives comme les menus et les boutons.  
+
+### 🔧 Construction de l’architecture Flask  
+- Étant totalement novice sur Flask, l’IA a aidé à comprendre la logique derrière :  
+  - La gestion des **routes**.  
+  - L’utilisation des **templates** avec Jinja.  
+  - L’interaction avec **MySQL** via Flask.  
+
+### 🚀 Optimisation du code  
+- **Amélioration des structures de code** grâce aux recommandations de l’IA.  
+- **Meilleures pratiques** pour la gestion de la **programmation asynchrone** et des bases de données.  
+
+Sans cette assistance, la mise en place de certaines fonctionnalités comme le système de **menus dans le bot Discord** ou la gestion **dynamique des devoirs** sur l’interface web aurait été beaucoup plus complexe.
 ---
 
 ## 🎯 Conclusion  
