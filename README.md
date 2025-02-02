@@ -25,7 +25,7 @@ Avant d’installer l’application, assurez-vous d’avoir les éléments suiva
 Clonez ce dépôt et installez les dépendances avec :  
 
 ```bash
-git clone https://github.com/ton-repo/gestionnaire-devoirs.git
+git clone https://github.com/Nakwi/Nak-Agenda.git
 cd gestionnaire-devoirs
 pip install -r requirements.txt
 ```
