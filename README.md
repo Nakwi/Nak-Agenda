@@ -218,7 +218,7 @@ Flask est utilisé pour :
 - **Supprimer des devoirs** grâce à des requêtes POST.  
 
 ### 🎓 Apprentissage de Flask  
-L'utilisation de Flask a nécessité un apprentissage approfondi, car ce framework n'était pas connu au départ.  
+L'utilisation de Flask a nécessité un apprentissage, car ce framework n'était pas connu au départ.  
 Cela a permis d’acquérir des compétences en :  
 
 - **Gestion de routes** (`@app.route()`).  
@@ -256,10 +256,5 @@ Le **gestionnaire de devoirs** est un projet qui allie **simplicité d’utilisa
 ✔️ **Automatisation** pour ne plus oublier ses devoirs.  
 ✔️ **Expérience utilisateur fluide** avec une interface interactive.  
 ✔️ **Base de données MySQL** pour stocker les informations.  
-
-Ce projet peut être amélioré avec :  
-- **Des notifications avancées** (rappels personnalisés)  
-- **Une gestion collaborative** des devoirs  
-- **Une intégration avec d'autres outils éducatifs**  
 
 🚀 **Prêt à être utilisé et amélioré !** 🚀  
