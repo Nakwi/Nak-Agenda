@@ -89,38 +89,177 @@ L’interface web permet :
 Le bot Discord repose sur `discord.py`, une bibliothèque asynchrone permettant d’exécuter des tâches en arrière-plan sans bloquer l’exécution principale.  
 La gestion des rappels repose sur une boucle de vérification (`tasks.loop`).  
 
-### 📂 Explication des fichiers Python  
+### 📂 Explication des fichiers Python
 
-#### `main.py`  
-- Point d’entrée principal du projet.  
-- Exécution parallèle de Flask et du bot Discord avec `threading.Thread`.  
-- Gestion des routes Flask pour interagir avec la base de données.  
-- Initialisation et exécution du bot Discord.  
+## `main.py`
+Ce fichier est le **point d’entrée principal** du projet. Il a plusieurs responsabilités :  
 
-#### `ui.py`  
-- Interface utilisateur interactive avec Discord.  
-- Utilisation des modaux et boutons de `discord.ui` pour capturer des entrées utilisateurs.  
-- Gestion des interactions asynchrones avec `interaction.response.send_message`.  
+### 🔹 Lancement du bot Discord et du serveur Flask en parallèle  
+L’utilisation de `threading.Thread` permet d’exécuter Flask et le bot Discord simultanément, garantissant que l’interface web et le bot fonctionnent ensemble sans conflit.  
 
-#### `events.py`  
-- Gestion des événements asynchrones.  
-- Utilisation du décorateur `@bot.event` pour réagir aux actions utilisateur.  
-- Suppression automatique des anciens messages au lancement du bot.  
-- Exécution d’une tâche planifiée (`tasks.loop`) pour vérifier et envoyer des rappels.  
+### 🔹 Gestion des routes Flask  
+Les routes Flask définissent les points d’accès pour l’interface web afin d’interagir avec la base de données (ajouter, afficher et supprimer des devoirs).  
 
-#### `database.py`  
-- Interaction avec une base de données MySQL.  
-- Connexion avec `mysql.connector.connect()`.  
-- Exécution de requêtes SQL pour insérer, récupérer et supprimer des devoirs.  
-- Transactions SQL avec `conn.commit()` pour garantir la persistance des données.  
+### 🔹 Initialisation et exécution du bot Discord  
+La connexion au serveur Discord se fait via le `DISCORD_TOKEN` récupéré dans un fichier `.env`.  
 
-#### `data_manager.py`  
-- Centralisation des interactions entre Flask, Discord et la base de données.  
-- Encapsulation des appels SQL pour simplifier l’utilisation des autres modules.  
+#### 🖥️ Extrait de `main.py` :  
+```python
+from flask import Flask
+import threading
+import discord
+from discord.ext import commands
 
-#### `config.py`  
-- Gestion des variables d’environnement avec `dotenv`.  
-- Chargement sécurisé des tokens et identifiants via `os.getenv()`.  
+app = Flask(__name__)
+
+# Création du bot Discord
+bot = commands.Bot(command_prefix="!")
+
+@app.route("/")
+def home():
+    return "Serveur Flask en ligne"
+
+def run_flask():
+    app.run(host="0.0.0.0", port=5000)
+
+# Démarrage de Flask en parallèle
+threading.Thread(target=run_flask).start()
+
+# Lancement du bot Discord
+bot.run("VOTRE_DISCORD_TOKEN")
+```
+
+---
+
+## `ui.py`
+Ce fichier gère **l’interface utilisateur interactive** sur Discord.  
+
+### 🔹 Utilisation de `discord.ui` pour les interactions  
+Les boutons et menus déroulants permettent aux utilisateurs de gérer les devoirs sans avoir à taper de commandes.  
+
+### 🔹 Gestion asynchrone des interactions  
+`interaction.response.send_message()` est utilisé pour répondre aux utilisateurs de manière interactive.  
+
+#### 🖥️ Exemple d’un bouton interactif :  
+```python
+from discord.ui import Button, View
+
+class DevoirButton(Button):
+    def __init__(self, label, devoir_id):
+        super().__init__(label=label, style=discord.ButtonStyle.primary)
+        self.devoir_id = devoir_id
+
+    async def callback(self, interaction):
+        await interaction.response.send_message(f"Devoir {self.devoir_id} sélectionné", ephemeral=True)
+```
+
+---
+
+## `events.py`
+Ce fichier gère les **événements asynchrones** du bot.  
+
+### 🔹 Utilisation du décorateur `@bot.event`  
+Permet d’exécuter des actions en réponse aux événements Discord (messages envoyés, bot connecté, etc.).  
+
+### 🔹 Suppression automatique des anciens messages  
+Utile pour garder le chat propre lorsque le bot affiche régulièrement la liste des devoirs.  
+
+### 🔹 Planification de tâches répétitives avec `tasks.loop`  
+Utilisé pour vérifier les devoirs à échéance et envoyer des rappels.  
+
+#### 🖥️ Exemple d'un événement qui affiche un message lorsque le bot est en ligne :  
+```python
+@bot.event
+async def on_ready():
+    print(f"Le bot est connecté en tant que {bot.user}")
+```
+
+---
+
+## `database.py`
+Ce fichier gère l’**interaction avec la base de données MySQL**.  
+
+### 🔹 Connexion à MySQL avec `mysql.connector.connect()`  
+Permet d’établir un lien avec une base de données externe pour stocker les devoirs.  
+
+### 🔹 Exécution de requêtes SQL  
+Insertion, récupération et suppression des devoirs en base de données.  
+
+### 🔹 Utilisation de `conn.commit()`  
+Assure la persistance des modifications.  
+
+#### 🖥️ Exemple de connexion à la base de données et d'insertion d'un devoir :  
+```python
+import mysql.connector
+
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="password",
+    database="devoirs_db"
+)
+
+cursor = conn.cursor()
+
+def ajouter_devoir(nom, date):
+    query = "INSERT INTO devoirs (nom, date) VALUES (%s, %s)"
+    cursor.execute(query, (nom, date))
+    conn.commit()
+```
+
+---
+
+## `data_manager.py`
+Ce fichier **centralise les interactions** entre Flask, Discord et la base de données.  
+
+### 🔹 Encapsulation des appels SQL  
+Permet d’avoir une interface unique pour interagir avec la base de données sans dupliquer du code dans plusieurs fichiers.  
+
+### 🔹 Facilite l’intégration entre les différents modules  
+Les fonctions ici sont utilisées aussi bien par Flask que par le bot Discord.  
+
+#### 🖥️ Exemple d’une fonction qui récupère tous les devoirs :  
+```python
+def obtenir_devoirs():
+    cursor.execute("SELECT * FROM devoirs")
+    return cursor.fetchall()
+```
+
+---
+
+## `config.py`
+Ce fichier gère la **configuration et les variables d’environnement**.  
+
+### 🔹 Utilisation de `dotenv`  
+Permet de stocker les tokens et identifiants dans un fichier `.env` au lieu du code source.  
+
+### 🔹 Chargement sécurisé des variables  
+`os.getenv()` est utilisé pour récupérer les valeurs sans les exposer dans le code.  
+
+#### 🖥️ Exemple :  
+```python
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+DATABASE_URL = os.getenv("DATABASE_URL")
+```
+
+---
+
+### 🏁 Conclusion  
+Chaque fichier du projet a un rôle bien défini et contribue à l’intégration fluide entre **Discord, Flask et MySQL**.  
+
+- `main.py` : point d’entrée, exécution parallèle de Flask et du bot.  
+- `ui.py` : interface interactive sur Discord avec boutons et menus.  
+- `events.py` : gestion des événements et tâches planifiées.  
+- `database.py` : interaction avec MySQL.  
+- `data_manager.py` : centralisation des requêtes SQL.  
+- `config.py` : gestion des variables d’environnement.  
+
+L'architecture asynchrone du bot permet de **gérer efficacement les devoirs** tout en assurant une **réactivité optimale**.
 
 
 ## 🔥 Utilisation de Flask  
