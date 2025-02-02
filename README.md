@@ -250,6 +250,40 @@ Cela a permis d’acquérir des compétences en :
 
 
 ---
+
+## 🗄️ Base de Données
+
+Le projet utilise MySQL pour stocker les devoirs. La base de données contient une table principale devoirs qui enregistre toutes les informations nécessaires.
+
+```sql
+CREATE TABLE devoirs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    deadline DATE NOT NULL,
+    pdf VARCHAR(255),
+    description TEXT,
+    rappel_at DATETIME
+);
+```
+### Opérations courantes
+
+Le projet exécute trois types d’opérations principales sur la base de données :
+
+- Ajout devoir
+```sql
+INSERT INTO devoirs (nom, deadline, pdf, description, rappel_at) VALUES (%s, %s, %s, %s, %s);
+```
+
+- Récupérer tous les devoirs :
+```sql
+SELECT * FROM devoirs ORDER BY deadline;
+```
+- Supprimer un devoir :
+```sql
+DELETE FROM devoirs WHERE id = ?;
+```
+
+---
 ## 🤖 Rôle de l'Intelligence Artificielle dans ce projet  
 
 L’IA a joué un rôle clé dans la conception de ce projet, notamment pour :  
